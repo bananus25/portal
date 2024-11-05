@@ -1,31 +1,45 @@
 const express = require('express');
 const app = express();
-const path = require('path');
-const fs = require('fs');
-const https = require('https');
+const PORT = process.env.PORT || 3000;
 
-const HTTP_PORT = 3000;
-const HTTPS_PORT = 443;
+app.use(express.json());
 
-// Устанавливаем статическую папку
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Маршрут для главной страницы
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-// Запуск сервера HTTP
-app.listen(HTTP_PORT, () => {
-  console.log(`Сервер запущен на http://localhost:${HTTP_PORT}`);
-});
-
-// Запуск сервера HTTPS
-const options = {
-  key: fs.readFileSync('key.posn'),
-  cert: fs.readFileSync('cert.posn')
+let users = {
+    // Пример данных пользователей
+    123456789: {
+        id: 123456789,
+        role: 'student',
+        students: [
+            { name: 'Иван Иванов', age: 20 },
+            { name: 'Петр Петров', age: 21 }
+        ],
+        teachers: []
+    },
+    987654321: {
+        id: 987654321,
+        role: 'teacher',
+        students: [],
+        teachers: [
+            { name: 'Анна Сидорова', subject: 'Математика' },
+            { name: 'Елена Иванова', subject: 'Физика' }
+        ]
+    }
 };
 
-https.createServer(options, app).listen(HTTPS_PORT, () => {
-  console.log(`Сервер запущен на https://localhost:${HTTPS_PORT}`);
+app.post('/auth', (req, res) => {
+    const { userId } = req.body;
+
+    if (!userId || !users[userId]) {
+        return res.status(404).json({ error: 'Пользователь не найден' });
+    }
+
+    if (users[userId].role) {
+        return res.json({ status: 'authorized', userData: users[userId] });
+    } else {
+        return res.status(403).json({ error: 'Доступ запрещен' });
+    }
+});
+
+app.listen(PORT, () => {
+    console.log(`Сервер запущен на порту ${PORT}`);
 });

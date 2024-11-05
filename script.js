@@ -45,8 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             console.log('Response data:', data);
             if (data.status === 'authorized') {
-                // Перенаправляем пользователя на соответствующую страницу
-                redirectUser(data.userData.role);
+                // Показываем контент после авторизации
+                content.style.display = 'block';
+                loginButton.style.display = 'none';
+                // Отображаем списки преподавателей и учеников
+                displayLists(data.userData);
             } else {
                 alert(data.error);
             }
@@ -56,14 +59,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Функция для перенаправления пользователя
-    function redirectUser(role) {
-        if (role === 'teacher') {
-            window.location.href = '/teacher.html';
-        } else if (role === 'student') {
-            window.location.href = '/student.html';
-        } else {
-            alert('Неизвестная роль пользователя');
-        }
+    // Функция для отображения списков
+    function displayLists(userData) {
+        console.log('Displaying lists for user data:', userData);
+        // Очищаем списки перед добавлением новых элементов
+        studentsList.innerHTML = '';
+        teachersList.innerHTML = '';
+
+        // Добавляем студентов
+        userData.students.forEach(student => {
+            const li = document.createElement('li');
+            li.textContent = `${student.name}, ${student.age} лет`;
+            studentsList.appendChild(li);
+        });
+
+        // Добавляем преподавателей
+        userData.teachers.forEach(teacher => {
+            const li = document.createElement('li');
+            li.textContent = `${teacher.name}, предмет: ${teacher.subject}`;
+            teachersList.appendChild(li);
+        });
     }
 });
