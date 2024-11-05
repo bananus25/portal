@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     const tg = window.Telegram.WebApp;
 
+    if (!tg) {
+        console.error('Telegram WebApp is not available');
+        return;
+    }
+
     tg.ready();
 
     const loginButton = document.getElementById('loginButton');
@@ -9,11 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const teachersList = document.getElementById('teachers-list');
 
     loginButton.addEventListener('click', () => {
+        console.log('Login button clicked');
         // Отправляем запрос на авторизацию через бота
         tg.sendData('login');
     });
 
     tg.onEvent('dataReceived', (data) => {
+        console.log('Data received:', data);
         if (data === 'authorized') {
             // Вызываем функцию для обработки авторизации
             handleAuthorization();
@@ -23,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Функция для обработки авторизации
     function handleAuthorization() {
         const userId = tg.initDataUnsafe.user.id;
+        console.log('User ID:', userId);
         fetch('/auth', {
             method: 'POST',
             headers: {
@@ -30,8 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             body: JSON.stringify({ userId })
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('Response status:', response.status);
+            return response.json();
+        })
         .then(data => {
+            console.log('Response data:', data);
             if (data.status === 'authorized') {
                 // Показываем контент после авторизации
                 content.style.display = 'block';
@@ -49,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Функция для отображения списков
     function displayLists(userData) {
+        console.log('Displaying lists for user data:', userData);
         // Очищаем списки перед добавлением новых элементов
         studentsList.innerHTML = '';
         teachersList.innerHTML = '';
