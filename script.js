@@ -1,26 +1,20 @@
-// Функция для получения Telegram ID из URL (например, из параметра запроса)
-function getTelegramIdFromUrl() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('telegramId');
+async function fetchUsers() {
+    const response = await fetch('https://your-server-url.com/users');
+    const users = await response.json();
+    const tableBody = document.querySelector('#usersTable tbody');
+
+    users.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${user.id}</td>
+            <td>${user.username}</td>
+            <td>${user.additionalInfo.firstName}</td>
+            <td>${user.additionalInfo.lastName}</td>
+            <td>${user.role}</td>
+        `;
+        tableBody.appendChild(row);
+    });
 }
 
-// Функция для отображения результата
-async function displayRole() {
-    const telegramId = getTelegramIdFromUrl();
-    if (!telegramId) {
-        document.getElementById('result').innerText = 'Telegram ID не найден';
-        return;
-    }
-
-    const response = await fetch(`/role/${telegramId}`);
-    const data = await response.json();
-
-    if (response.ok) {
-        document.getElementById('result').innerText = `ID: ${data.id}, Роль: ${data.role}`;
-    } else {
-        document.getElementById('result').innerText = `Ошибка: ${data.message}`;
-    }
-}
-
-// Вызываем функцию для отображения роли при загрузке страницы
-window.onload = displayRole;
+// Вызываем функцию для загрузки данных при загрузке страницы
+window.onload = fetchUsers;

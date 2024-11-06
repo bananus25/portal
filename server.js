@@ -36,16 +36,11 @@ const User = mongoose.model('User', userSchema);
 // Middleware для обработки JSON
 app.use(express.json());
 
-// Маршрут для получения роли по Telegram ID
-app.get('/role/:telegramId', async (req, res) => {
+// Маршрут для получения всех пользователей
+app.get('/users', async (req, res) => {
     try {
-        const telegramId = parseInt(req.params.telegramId);
-        const user = await User.findOne({ id: telegramId });
-        if (user) {
-            res.json({ id: user.id, role: user.role });
-        } else {
-            res.status(404).json({ message: 'User not found' });
-        }
+        const users = await User.find();
+        res.json(users);
     } catch (err) {
         res.status(500).send(err.message);
     }
