@@ -1,5 +1,5 @@
 async function fetchUsers() {
-    const response = await fetch('http://localhost:3000/users');
+    const response = await fetch('https://your-vercel-app-name.vercel.app/users');
     const users = await response.json();
     const tableBody = document.querySelector('#usersTable tbody');
 
