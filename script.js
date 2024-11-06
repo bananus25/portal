@@ -1,20 +1,12 @@
-async function fetchUsers() {
-    const response = await fetch('/users');
-    const users = await response.json();
-    const tableBody = document.querySelector('#usersTable tbody');
+document.getElementById('checkRoleForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const telegramId = document.getElementById('telegramId').value;
+    const response = await fetch(`/role/${telegramId}`);
+    const data = await response.json();
 
-    users.forEach(user => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${user.id}</td>
-            <td>${user.username}</td>
-            <td>${user.additionalInfo.firstName}</td>
-            <td>${user.additionalInfo.lastName}</td>
-            <td>${user.role}</td>
-        `;
-        tableBody.appendChild(row);
-    });
-}
-
-// Вызываем функцию для загрузки данных при загрузке страницы
-window.onload = fetchUsers;
+    if (response.ok) {
+        document.getElementById('result').innerText = `Роль: ${data.role}`;
+    } else {
+        document.getElementById('result').innerText = `Ошибка: ${data.message}`;
+    }
+});
