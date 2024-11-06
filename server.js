@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 
 // Подключение к MongoDB Atlas
 mongoose.connect('mongodb+srv://Nikita:tAeIIEPR6ZYW7aQ1@cluster0.jyarv.mongodb.net/Cluster0?retryWrites=true&w=majority');
