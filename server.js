@@ -3,16 +3,13 @@ const mongoose = require('mongoose');
 const app = express();
 const PORT = 3000;
 
-// Подключение к MongoDB
-mongoose.connect('mongodb+srv://Nikita:tAeIIEPR6ZYW7aQ1@cluster0.jyarv.mongodb.net/Cluster0?retryWrites=true&w=majority', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
+// Подключение к MongoDB Atlas
+mongoose.connect('mongodb+srv://Nikita:tAeIIEPR6ZYW7aQ1@cluster0.jyarv.mongodb.net/Cluster0?retryWrites=true&w=majority');
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
-    console.log('Connected to MongoDB');
+    console.log('Connected to MongoDB Atlas');
 });
 
 // Определение схемы и модели

@@ -10,11 +10,11 @@ table {
 }
 
 th, td {
-    border: 1px solid #682525;
+    border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
 }
 
 th {
-    background-color: #ff2f2f;
+    background-color: #f2f2f2;
 }
