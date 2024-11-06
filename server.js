@@ -1,45 +1,42 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
+// Подключение к MongoDB
+mongoose.connect('mongodb+srv://Nikita:tAeIIEPR6ZYW7aQ1@cluster0.jyarv.mongodb.net/Cluster0?retryWrites=true&w=majority', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+    console.log('Connected to MongoDB');
+});
+
+// Определение схемы и модели
+const userSchema = new mongoose.Schema({
+    telegramId: String,
+    role: String
+});
+
+const User = mongoose.model('User', userSchema);
+
+// Middleware для обработки JSON
 app.use(express.json());
 
-let users = {
-    // Пример данных пользователей
-    123456789: {
-        id: 123456789,
-        role: 'student',
-        students: [
-            { name: 'Иван Иванов', age: 20 },
-            { name: 'Петр Петров', age: 21 }
-        ],
-        teachers: []
-    },
-    987654321: {
-        id: 987654321,
-        role: 'teacher',
-        students: [],
-        teachers: [
-            { name: 'Анна Сидорова', subject: 'Математика' },
-            { name: 'Елена Иванова', subject: 'Физика' }
-        ]
-    }
-};
-
-app.post('/auth', (req, res) => {
-    const { userId } = req.body;
-
-    if (!userId || !users[userId]) {
-        return res.status(404).json({ error: 'Пользователь не найден' });
-    }
-
-    if (users[userId].role) {
-        return res.json({ status: 'authorized', userData: users[userId] });
-    } else {
-        return res.status(403).json({ error: 'Доступ запрещен' });
+// Маршрут для получения всех пользователей
+app.get('/users', async (req, res) => {
+    try {
+        const users = await User.find();
+        res.json(users);
+    } catch (err) {
+        res.status(500).send(err.message);
     }
 });
 
+// Запуск сервера
 app.listen(PORT, () => {
-    console.log(`Сервер запущен на порту ${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });

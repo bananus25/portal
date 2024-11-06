@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Портал обучения</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список пользователей</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Добро пожаловать на портал обучения!</h1>
-    <button id="loginButton">Войти через Telegram</button>
-    <div id="content" style="display: none;">
-      <h2>Студенты</h2>
-      <ul id="students-list"></ul>
-      <h2>Преподаватели</h2>
-      <ul id="teachers-list"></ul>
-    </div>
-  </div>
-  <script src="script.js"></script>
+    <h1>Список пользователей</h1>
+    <table id="usersTable">
+        <thead>
+            <tr>
+                <th>Telegram ID</th>
+                <th>Роль</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Данные будут заполнены через JavaScript -->
+        </tbody>
+    </table>
+
+    <script src="script.js"></script>
 </body>
 </html>
