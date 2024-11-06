@@ -42,7 +42,7 @@ app.get('/role/:telegramId', async (req, res) => {
         const telegramId = parseInt(req.params.telegramId);
         const user = await User.findOne({ id: telegramId });
         if (user) {
-            res.json({ role: user.role });
+            res.json({ id: user.id, role: user.role });
         } else {
             res.status(404).json({ message: 'User not found' });
         }
