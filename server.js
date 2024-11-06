@@ -17,7 +17,17 @@ db.once('open', () => {
 
 // Определение схемы и модели
 const userSchema = new mongoose.Schema({
-    telegramId: String,
+    id: Number,
+    username: String,
+    accessGranted: Boolean,
+    additionalInfo: {
+        firstName: String,
+        lastName: String,
+        languageCode: String
+    },
+    accessMessageIds: [Number],
+    students: [mongoose.Schema.Types.Mixed],
+    teachers: [mongoose.Schema.Types.Mixed],
     role: String
 });
 

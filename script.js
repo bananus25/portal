@@ -6,7 +6,10 @@ async function fetchUsers() {
     users.forEach(user => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${user.telegramId}</td>
+            <td>${user.id}</td>
+            <td>${user.username}</td>
+            <td>${user.additionalInfo.firstName}</td>
+            <td>${user.additionalInfo.lastName}</td>
             <td>${user.role}</td>
         `;
         tableBody.appendChild(row);
